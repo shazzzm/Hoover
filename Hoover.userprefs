@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hoover/Sprite/Hoover.cs">
+    <Files>
+      <File FileName="Hoover/Game1.cs" Line="70" Column="24" />
+      <File FileName="Hoover/Sprite.cs" Line="43" Column="17" />
+      <File FileName="Hoover/Sprite/Hoover.cs" Line="30" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

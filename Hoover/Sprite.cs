@@ -6,27 +6,27 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Hoover
 {
-	public class Sprite
+	public abstract class Sprite
 	{
 		/// <summary>
 		/// Position of the sprite
 		/// </summary>
-		Vector2 _Position;
+		protected Vector2 _Position;
 
 		/// <summary>
 		/// Velocity of the sprite
 		/// </summary>
-		Vector2 _Velocity;
+		protected Vector2 _Velocity;
 
 		/// <summary>
 		/// Texture
 		/// </summary>
-		Texture2D _texture;
+		protected Texture2D _texture;
 
 		/// <summary>
 		/// Name of the image for the sprite
 		/// </summary>
-		string _assetName;
+		protected string _assetName;
 
 		/// <summary>
 		/// Loads the content.
@@ -45,6 +45,10 @@ namespace Hoover
 		{
 			spriteBatch.Draw (_texture, _Position, Color.White);
 		}
+
+		abstract public void Update (GameTime gmt);
+
+		                   	
 	}
 }
 

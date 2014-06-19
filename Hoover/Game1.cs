@@ -17,12 +17,14 @@ namespace Hoover
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;		
+		Hoover h;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";	            
-			graphics.IsFullScreen = true;		
+			graphics.IsFullScreen = false;		
+
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace Hoover
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+			h = new Hoover ();
             base.Initialize();
 				
         }
@@ -48,6 +51,7 @@ namespace Hoover
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //TODO: use this.Content to load your game content here 
+			h.LoadContent (this.Content);
         }
 
         /// <summary>
@@ -63,6 +67,7 @@ namespace Hoover
 				Exit();
 			}
             // TODO: Add your update logic here			
+			h.Update (gameTime);
             base.Update(gameTime);
         }
 
@@ -75,7 +80,9 @@ namespace Hoover
            	graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 		
             //TODO: Add your drawing code here
-            
+			spriteBatch.Begin ();
+			h.Draw (spriteBatch);
+			spriteBatch.End();
             base.Draw(gameTime);
         }
     }
