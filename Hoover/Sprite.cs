@@ -8,6 +8,13 @@ namespace Hoover
 {
 	public abstract class Sprite
 	{
+		protected enum SpriteFacing { Up, Down, Left, Right };
+
+		/// <summary>
+		/// Direction the sprite is facing
+		/// </summary>
+		protected SpriteFacing _Facing;
+
 		/// <summary>
 		/// Position of the sprite
 		/// </summary>
@@ -27,6 +34,17 @@ namespace Hoover
 		/// Name of the image for the sprite
 		/// </summary>
 		protected string _assetName;
+
+		#region Properties
+
+		public Vector2 Position
+		{
+			get {
+				return new Vector2 (_Position.X, _Position.Y);
+			}
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Loads the content.

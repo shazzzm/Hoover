@@ -10,8 +10,7 @@ namespace Hoover
 		/// <summary>
 		/// The direction the sprite is facing - i.e. which sprite to show
 		/// </summary>
-		enum SpriteFacing { Up, Down, Left, Right };
-		SpriteFacing _Facing = SpriteFacing.Up;
+
 		public Hoover ()
 		{
 			_assetName = "Transprt";
@@ -36,10 +35,6 @@ namespace Hoover
 				_Facing = SpriteFacing.Down;
 				_Position.Y += _Velocity.Y;
 			}
-
-
-
-
 		}
 
 		/// <summary>
