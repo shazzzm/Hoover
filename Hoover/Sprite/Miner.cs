@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Hoover
 {
+	/// <summary>
+	/// Miner.
+	/// </summary>
 	public class Miner : Sprite
 	{
 		int noRocksMined = 0;
@@ -15,6 +18,10 @@ namespace Hoover
 			_Facing = SpriteFacing.Down;
 		}
 
+		/// <summary>
+		/// Draw the specified sprite.
+		/// </summary>
+		/// <param name="spriteBatch">Sprite batch.</param>
 		new public void Draw(SpriteBatch spriteBatch)
 		{	
 			// We only want to draw the hoover that's facing in the direction we're moving
@@ -31,12 +38,12 @@ namespace Hoover
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
 		}
 
-		public void Update (GameTime gmt, Rock[] rocks)
+		public void Update (GameTime gmt, RockManager rocks)
 		{
 			float close = 10000f;
 			int closeID = -1;
 			// Find the closest rock
-			for (int i = 0; i < rocks.Length; i++) {
+			for (int i = 0; i < rocks.noRocks; i++) {
 				if (rocks [i] != null) {
 					if (Vector2.Distance (_Position, rocks [i].Position) < close) {
 						closeID = i;
@@ -70,7 +77,7 @@ namespace Hoover
 			// If we're on a rock, mine it!
 			else {
 				noRocksMined++;
-				rocks [closeID] = null;
+				rocks.removeRock (closeID);
 			}
 		}
 

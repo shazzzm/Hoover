@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Hoover
 {
+	/// <summary>
+	/// Abstract class for all sprites
+	/// </summary>
 	public abstract class Sprite
 	{
 		protected enum SpriteFacing { Up, Down, Left, Right };

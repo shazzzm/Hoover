@@ -19,7 +19,7 @@ namespace Hoover
         SpriteBatch spriteBatch;		
 		Hoover hoover;
 		Miner miner;
-		Rock[] rocks;
+		RockManager rocks;
 
         public Game1()
         {
@@ -40,7 +40,7 @@ namespace Hoover
             // TODO: Add your initialization logic here
 			hoover = new Hoover ();
 			miner = new Miner ();
-
+			rocks = new RockManager ();
             base.Initialize();
 				
         }
@@ -57,7 +57,7 @@ namespace Hoover
             //TODO: use this.Content to load your game content here 
 			hoover.LoadContent (this.Content);
 			miner.LoadContent (this.Content);
-
+			rocks.LoadContent (this.Content);
         }
 
         /// <summary>
@@ -91,13 +91,7 @@ namespace Hoover
 			spriteBatch.Begin ();
 			hoover.Draw (spriteBatch);
 			miner.Draw (spriteBatch);
-
-			for (int i = 0; i < rocks.Length; i++) {
-				if (rocks [i] != null) {
-					rocks [i].Draw (spriteBatch);
-				}
-
-			}
+			rocks.Draw (spriteBatch);
 
 			spriteBatch.End();
             base.Draw(gameTime);

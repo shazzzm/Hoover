@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Hoover
 {
+	/// <summary>
+	/// User controlled Hoover sprite
+	/// </summary>
 	public class Hoover : Sprite
 	{
 		/// <summary>
