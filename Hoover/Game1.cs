@@ -17,8 +17,8 @@ namespace Hoover
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;		
-		Hoover h;
-		Miner m;
+		Hoover hoover;
+		Miner miner;
 		Rock[] rocks;
 
         public Game1()
@@ -38,8 +38,8 @@ namespace Hoover
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-			h = new Hoover ();
-			m = new Miner ();
+			hoover = new Hoover ();
+			miner = new Miner ();
 
             base.Initialize();
 				
@@ -55,16 +55,8 @@ namespace Hoover
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //TODO: use this.Content to load your game content here 
-
-			// Create our rocks
-			rocks = new Rock[10];
-			Random r = new Random ();
-			for (int i = 0; i < rocks.Length; i++) {
-				rocks [i] = new Rock (new Vector2 (r.Next (600), r.Next(500)));
-				rocks [i].LoadContent (this.Content);
-			}
-			h.LoadContent (this.Content);
-			m.LoadContent (this.Content);
+			hoover.LoadContent (this.Content);
+			miner.LoadContent (this.Content);
 
         }
 
@@ -81,8 +73,8 @@ namespace Hoover
 				Exit();
 			}
             // TODO: Add your update logic here			
-			h.Update (gameTime);
-			m.Update (gameTime, rocks);
+			hoover.Update (gameTime);
+			miner.Update (gameTime, rocks);
 			//m.Update (gameTime);
             base.Update(gameTime);
         }
@@ -97,11 +89,14 @@ namespace Hoover
 		
             //TODO: Add your drawing code here
 			spriteBatch.Begin ();
-			h.Draw (spriteBatch);
-			m.Draw (spriteBatch);
+			hoover.Draw (spriteBatch);
+			miner.Draw (spriteBatch);
 
 			for (int i = 0; i < rocks.Length; i++) {
-				rocks [i].Draw (spriteBatch);
+				if (rocks [i] != null) {
+					rocks [i].Draw (spriteBatch);
+				}
+
 			}
 
 			spriteBatch.End();

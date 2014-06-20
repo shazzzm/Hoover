@@ -6,10 +6,11 @@ namespace Hoover
 {
 	public class Miner : Sprite
 	{
+		int noRocksMined = 0;
 		public Miner ()
 		{
 			_assetName = "Miner";
-			_Position = new Vector2 (25, 20);
+			_Position = new Vector2 (20, 20);
 			_Velocity = new Vector2 (2, 2);
 			_Facing = SpriteFacing.Down;
 		}
@@ -32,27 +33,44 @@ namespace Hoover
 
 		public void Update (GameTime gmt, Rock[] rocks)
 		{
-			float close = 1000f;
+			float close = 10000f;
 			int closeID = -1;
 			// Find the closest rock
 			for (int i = 0; i < rocks.Length; i++) {
-				if (Vector2.Distance (_Position, rocks [i].Position) < close) {
-					closeID = i;
+				if (rocks [i] != null) {
+					if (Vector2.Distance (_Position, rocks [i].Position) < close) {
+						closeID = i;
+					}
 				}
 			}
 
-			if (rocks [closeID].Position.X > (_Position.X - 5)) {
+			// Quick check that there hasn't been a fuck up
+			if (closeID == -1) {
+				int i = 0;
+				while (rocks[i] != null) {
+					closeID = i;
+					i++;
+				}
+			}
+
+			// Move towards the nearest rock
+			if ((rocks [closeID].Position.X - _Position.X) > 2) {
 				_Position.X += _Velocity.X;
 				_Facing = SpriteFacing.Right;
-			} else if (rocks [closeID].Position.X < _Position.X) {
+			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
 				_Position.X -= _Velocity.X;
 				_Facing = SpriteFacing.Left;
-			} else if (rocks [closeID].Position.Y < _Position.Y) {
+			} else if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
 				_Position.Y += _Velocity.Y;
 				_Facing = SpriteFacing.Down;
-			} else if (rocks [closeID].Position.Y > _Position.Y) {
+			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2) {
 				_Position.Y -= _Velocity.Y;
 				_Facing = SpriteFacing.Up;
+			}
+			// If we're on a rock, mine it!
+			else {
+				noRocksMined++;
+				rocks [closeID] = null;
 			}
 		}
 
