@@ -15,7 +15,7 @@ namespace Hoover
 			_assetName = "Miner";
 			_Position = new Vector2 (20, 20);
 			_Velocity = new Vector2 (2, 2);
-			_Facing = SpriteFacing.Down;
+			_Facing = Direction.Down;
 		}
 
 		/// <summary>
@@ -26,13 +26,13 @@ namespace Hoover
 		{	
 			// We only want to draw the hoover that's facing in the direction we're moving
 			Rectangle rect = new Rectangle ();
-			if (_Facing == SpriteFacing.Right) {
+			if (_Facing == Direction.Right) {
 				rect = new Rectangle (240, 0, 25, 20);
-			} else if (_Facing == SpriteFacing.Down) {
+			} else if (_Facing == Direction.Down) {
 				rect = new Rectangle (0, 40, 25, 20);
-			} else if (_Facing == SpriteFacing.Left) {
+			} else if (_Facing == Direction.Left) {
 				rect = new Rectangle (80, 0, 25, 20);
-			} else if (_Facing == SpriteFacing.Up) {
+			} else if (_Facing == Direction.Up) {
 				rect = new Rectangle (160, 20, 25, 20);
 			}
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
@@ -63,22 +63,24 @@ namespace Hoover
 			// Move towards the nearest rock
 			if ((rocks [closeID].Position.X - _Position.X) > 2) {
 				_Position.X += _Velocity.X;
-				_Facing = SpriteFacing.Right;
+				_Facing = Direction.Right;
 			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
 				_Position.X -= _Velocity.X;
-				_Facing = SpriteFacing.Left;
+				_Facing = Direction.Left;
 			} else if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
 				_Position.Y += _Velocity.Y;
-				_Facing = SpriteFacing.Down;
+				_Facing = Direction.Down;
 			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2) {
 				_Position.Y -= _Velocity.Y;
-				_Facing = SpriteFacing.Up;
+				_Facing = Direction.Up;
 			}
 			// If we're on a rock, mine it!
 			else {
 				noRocksMined++;
 				rocks.removeRock (closeID);
 			}
+
+			UpdateBoarders ();
 		}
 
 		#region implemented abstract members of Sprite

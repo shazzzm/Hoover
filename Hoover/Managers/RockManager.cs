@@ -58,6 +58,23 @@ namespace Hoover
 		}
 
 		/// <summary>
+		/// Gets the rock boarders
+		/// </summary>
+		/// <returns>The boarders.</returns>
+		public Rectangle[] getBoarders()
+		{
+			Rectangle[] boarders = new Rectangle[rocks.Length];
+
+			for (int i = 0; i < rocks.Length; i++) {
+				if (rocks [i] != null) {
+					boarders [i] = rocks [i].Boarders;
+				}
+			}
+
+			return boarders;
+		}
+
+		/// <summary>
 		/// Loads the content.
 		/// </summary>
 		/// <param name="content">Content.</param>

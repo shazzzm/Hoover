@@ -73,7 +73,7 @@ namespace Hoover
 				Exit();
 			}
             // TODO: Add your update logic here			
-			hoover.Update (gameTime);
+			hoover.Update (gameTime, rocks.getBoarders());
 			miner.Update (gameTime, rocks);
 			//m.Update (gameTime);
             base.Update(gameTime);
@@ -85,8 +85,8 @@ namespace Hoover
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-           	graphics.GraphicsDevice.Clear(new Color(0, 138, 118));
-		
+           	//graphics.GraphicsDevice.Clear(new Color(0, 138, 118));
+			graphics.GraphicsDevice.Clear(Color.Wheat);
             //TODO: Add your drawing code here
 			spriteBatch.Begin ();
 			hoover.Draw (spriteBatch);

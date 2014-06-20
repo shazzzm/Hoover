@@ -57,6 +57,7 @@
     <Compile Include="Sprite\Miner.cs" />
     <Compile Include="Sprite\Rock.cs" />
     <Compile Include="Managers\RockManager.cs" />
+    <Compile Include="Managers\Manager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
