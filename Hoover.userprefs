@@ -1,13 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hoover/Sprite.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hoover/Sprite/Miner.cs">
     <Files>
-      <File FileName="Hoover/Game1.cs" Line="56" Column="4" />
-      <File FileName="Hoover/Sprite.cs" Line="125" Column="37" />
-      <File FileName="Hoover/Sprite/Hoover.cs" Line="76" Column="17" />
-      <File FileName="Hoover/Sprite/Miner.cs" Line="31" Column="43" />
-      <File FileName="Hoover/Managers/RockManager.cs" Line="63" Column="39" />
+      <File FileName="Hoover/Game1.cs" Line="82" Column="48" />
+      <File FileName="Hoover/Sprite.cs" Line="127" Column="54" />
+      <File FileName="Hoover/Sprite/Hoover.cs" Line="26" Column="3" />
+      <File FileName="Hoover/Sprite/Miner.cs" Line="90" Column="37" />
+      <File FileName="Hoover/Managers/RockManager.cs" Line="73" Column="5" />
       <File FileName="Hoover/Managers/Manager.cs" Line="1" Column="1" />
+      <File FileName="Hoover/Sprite/Rock.cs" Line="8" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

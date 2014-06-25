@@ -1,5 +1,6 @@
 #region Using Statements
 using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -72,9 +73,13 @@ namespace Hoover
 			{
 				Exit();
 			}
-            // TODO: Add your update logic here			
-			hoover.Update (gameTime, rocks.getBoarders());
-			miner.Update (gameTime, rocks);
+            // TODO: Add your update logic here		
+			List<Rectangle> boarders = rocks.getBoarders ();
+			List<Rectangle> hooverBoarder = new List<Rectangle> ();
+			hooverBoarder.Add (hoover.Boarders);
+			boarders.Add (miner.Boarders);
+			hoover.Update (gameTime, boarders);
+			miner.Update (gameTime, rocks, hooverBoarder);
 
             base.Update(gameTime);
         }

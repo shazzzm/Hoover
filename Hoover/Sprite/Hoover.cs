@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,7 +24,7 @@ namespace Hoover
 			_textureSize = new Vector2(40, 35);
 		}
 
-		public void Update(GameTime gmt, Rectangle[] boarders)
+		public void Update(GameTime gmt, List<Rectangle> boarders)
 		{
 			KeyboardState state = Keyboard.GetState ();
 

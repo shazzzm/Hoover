@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,6 +11,7 @@ namespace Hoover
 	/// </summary>
 	public class Miner : Sprite
 	{
+		int collisionRight = 0;
 		int noRocksMined = 0;
 		public Miner ()
 		{
@@ -40,7 +43,7 @@ namespace Hoover
 
 		}
 
-		public void Update (GameTime gmt, RockManager rocks)
+		public void Update (GameTime gmt, RockManager rocks, List<Rectangle> boarders)
 		{
 			// If we're out of rocks, just chill
 			if (rocks.noRocks == 0) {
@@ -58,19 +61,15 @@ namespace Hoover
 			}
 
 			// Move towards the nearest rock
-			if ((rocks [closeID].Position.X - _Position.X) > 2) {
-				_Position.X += _Velocity.X;
-				_Facing = Direction.Right;
+			if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
+				move (Direction.Down, boarders);
 			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
-				_Position.X -= _Velocity.X;
-				_Facing = Direction.Left;
-			} else if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
-				_Position.Y += _Velocity.Y;
-				_Facing = Direction.Down;
+				move (Direction.Left, boarders);
 			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2) {
-				_Position.Y -= _Velocity.Y;
-				_Facing = Direction.Up;
-			}
+				move (Direction.Up, boarders);
+			} else if ((rocks [closeID].Position.X - _Position.X) > 2) {
+				move (Direction.Right, boarders);
+			} 
 			// If we're on a rock, mine it!
 			else {
 				noRocksMined++;
@@ -78,6 +77,45 @@ namespace Hoover
 			}
 
 			UpdateBoarders ();
+		}
+
+		/// <summary>
+		/// Moves the sprite in the specified direction. We also do edge detection e.t.c here
+		/// </summary>
+		/// <param name="d">Direction we're moving</param>
+		/// <param name="boarders">Boarders to avoid</param>
+		private void move(Direction d, List<Rectangle> boarders)
+		{
+			_Facing = d;
+			// If there's no collision, move!
+			if (!DetectCollision (boarders, d)) {
+				if (d == Direction.Down) {
+					_Position.Y += _Velocity.Y;
+				} else if (d == Direction.Left) {
+					_Position.X -= _Velocity.X;
+				} else if (d == Direction.Up) {
+					_Position.Y -= _Velocity.Y;
+				} else if (d == Direction.Right) {
+					_Position.X += _Velocity.X;
+				} 
+			} else {
+				// If the collision is one way, try going another!
+				if (d==Direction.Down) {
+					Debug.Write ("Collision Down: Trying Right");
+					move (Direction.Right, boarders);
+				} else if (d == Direction.Left) {
+					Debug.Write ("Collision Left: Trying Down");
+					move (Direction.Down, boarders);
+				} else if (d == Direction.Up) {
+					Debug.Write ("Collision Up: Trying Left");
+					move (Direction.Left, boarders);
+				} else if (d == Direction.Right) {
+					Debug.Write ("Collision Right: Trying Down");
+					move (Direction.Down, boarders);
+					collisionRight++;
+				} 
+			}
+
 		}
 
 		#region implemented abstract members of Sprite

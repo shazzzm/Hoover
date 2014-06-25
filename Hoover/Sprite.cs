@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -84,7 +85,6 @@ namespace Hoover
 		{
 			_texture = contentManager.Load<Texture2D> (_assetName);
 			// Create a rectangle based off the size of the textures for collision detection
-			//_boarders = new Rectangle(((int)_Position.X - (int)_textureSize.X/ 2), (int)(_Position.Y - (int)_textureSize.Y/2), (int)_textureSize.X, (int)_textureSize.Y);
 			_boarders = new Rectangle(((int)_Position.X), (int)(_Position.Y), (int)_textureSize.X, (int)_textureSize.Y);
 		}
 
@@ -95,7 +95,6 @@ namespace Hoover
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw (_texture, _Position, Color.White);
-			//spriteBatch.Draw (_texture, Boarders, Color.White);
 		}
 
 		/// <summary>
@@ -121,10 +120,10 @@ namespace Hoover
 		/// <returns>The collision.</returns>
 		/// <param name="boarders">Boarders.</param>
 		/// <param name="d">Direction to check</param>
-		protected bool DetectCollision(Rectangle[] boarders, Direction d)
+		protected bool DetectCollision(List<Rectangle> boarders, Direction d)
 		{
 			Rectangle r = new Rectangle();
-			for (int i = 0; i < boarders.Length; i++) {
+			for (int i = 0; i < boarders.Count; i++) {
 				// We add the velocity to the current position to see if a collision will occur, 
 				if (d == Direction.Left) {
 					r = new Rectangle ((int)(_Position.X - _Velocity.X), (int)_Position.Y, Boarders.Width, Boarders.Height);
@@ -142,7 +141,6 @@ namespace Hoover
 				}
 
 				if (r.Intersects (boarders [i])) {
-					Debug.Write (boarders [i]);
 					return true;
 				}
 			}

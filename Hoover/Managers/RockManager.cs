@@ -64,12 +64,12 @@ namespace Hoover
 		/// Gets the rock boarders
 		/// </summary>
 		/// <returns>The boarders.</returns>
-		public Rectangle[] getBoarders()
+		public List<Rectangle> getBoarders()
 		{
-			Rectangle[] boarders = new Rectangle[rocks.Count];
+			List<Rectangle> boarders = new List<Rectangle> ();
 
 			for (int i = 0; i < rocks.Count; i++) {
-				boarders [i] = rocks [i].Boarders;
+				boarders.Add (rocks [i].Boarders);
 			}
 
 			return boarders;
