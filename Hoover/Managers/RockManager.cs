@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Hoover
 {
@@ -13,12 +14,7 @@ namespace Hoover
 		/// <summary>
 		/// The rocks.
 		/// </summary>
-		private Rock[] rocks;
-
-		/// <summary>
-		/// Number of rocks left
-		/// </summary>
-		private int _noRocks;
+		List<Rock> rocks;
 
 		/// <summary>
 		/// Accesses the rock array
@@ -27,12 +23,7 @@ namespace Hoover
 		public Rock this[int index]
 		{
 			get {
-				if (_noRocks != 0)
-				{
-					return rocks[index];
-				}
-
-				return null;
+				return rocks[index];
 			}
 		}
 
@@ -42,7 +33,7 @@ namespace Hoover
 		/// <value>The no rocks.</value>
 		public int noRocks {
 			get {
-				return this._noRocks;
+				return rocks.Count;
 			}
 		}
 
@@ -51,13 +42,12 @@ namespace Hoover
 		/// </summary>
 		public RockManager ()
 		{
-			rocks = new Rock[10];
+			rocks = new List<Rock> ();
 			Random r = new Random ();
-			for (int i = 0; i < rocks.Length; i++) {
-				rocks [i] = new Rock (new Vector2 (r.Next (300) * 2, r.Next(250) * 2));
+			for (int i = 0; i < 10; i++) {
+				Rock temp = new Rock (new Vector2 (r.Next (300) * 2, r.Next(250) * 2));
+				rocks.Add (temp);
 			}
-
-			_noRocks = rocks.Length;
 		}
 
 
@@ -67,8 +57,7 @@ namespace Hoover
 		/// <param name="index">Index.</param>
 		public void removeRock(int index)
 		{
-			rocks [index] = null;
-			_noRocks--;
+			rocks.RemoveAt (index);
 		}
 
 		/// <summary>
@@ -77,12 +66,10 @@ namespace Hoover
 		/// <returns>The boarders.</returns>
 		public Rectangle[] getBoarders()
 		{
-			Rectangle[] boarders = new Rectangle[rocks.Length];
+			Rectangle[] boarders = new Rectangle[rocks.Count];
 
-			for (int i = 0; i < rocks.Length; i++) {
-				if (rocks [i] != null) {
-					boarders [i] = rocks [i].Boarders;
-				}
+			for (int i = 0; i < rocks.Count; i++) {
+				boarders [i] = rocks [i].Boarders;
 			}
 
 			return boarders;
@@ -94,7 +81,7 @@ namespace Hoover
 		/// <param name="content">Content.</param>
 		public void LoadContent(ContentManager content)
 		{
-			for (int i = 0; i < rocks.Length; i++) {
+			for (int i = 0; i < rocks.Count; i++) {
 				rocks [i].LoadContent (content);
 			}
 		}
@@ -105,10 +92,8 @@ namespace Hoover
 		/// <param name="spriteBatch">Sprite batch.</param>
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			for (int i = 0; i < rocks.Length; i++) {
-				if (rocks [i] != null) {
-					rocks [i].Draw (spriteBatch);
-				}
+			for (int i = 0; i < rocks.Count; i++) {
+				rocks [i].Draw (spriteBatch);
 			}
 		}
 	}

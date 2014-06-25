@@ -51,24 +51,11 @@ namespace Hoover
 			int closeID = -1;
 			// Find the closest rock
 			for (int i = 0; i < rocks.noRocks; i++) {
-				if (rocks [i] != null) {
-					if (Vector2.Distance (_Position, rocks [i].Position) < close) {
-						closeID = i;
-						close = Vector2.Distance (_Position, rocks [i].Position);
-					}
+				if (Vector2.Distance (_Position, rocks [i].Position) < close) {
+					closeID = i;
+					close = Vector2.Distance (_Position, rocks [i].Position);
 				}
 			}
-
-			// Quick check that there hasn't been a fuck up
-			if (closeID == -1) {
-				int i = 0;
-				while (rocks[i] == null) {
-					i++;
-					closeID = i;
-				}
-			} 
-
-
 
 			// Move towards the nearest rock
 			if ((rocks [closeID].Position.X - _Position.X) > 2) {
