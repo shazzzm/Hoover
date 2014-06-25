@@ -75,7 +75,7 @@ namespace Hoover
             // TODO: Add your update logic here			
 			hoover.Update (gameTime, rocks.getBoarders());
 			miner.Update (gameTime, rocks);
-			//m.Update (gameTime);
+
             base.Update(gameTime);
         }
 

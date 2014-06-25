@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Hoover
 {
@@ -19,6 +20,7 @@ namespace Hoover
 			_assetName = "Transprt";
 			_Position = new Vector2 (50, 50);
 			_Velocity = new Vector2 (5, 5);
+			_textureSize = new Vector2(40, 35);
 		}
 
 		public void Update(GameTime gmt, Rectangle[] boarders)
@@ -28,25 +30,25 @@ namespace Hoover
 			if (state.IsKeyDown (Keys.Right)) {
 				_Facing = Direction.Right;
 
-				if (DetectCollision (boarders, _Facing)) {
+				if (!DetectCollision (boarders, _Facing)) {
 					_Position.X += _Velocity.X;
 				}
 			} else if (state.IsKeyDown (Keys.Left)) {
 				_Facing = Direction.Left;
 
-				if (DetectCollision (boarders, _Facing)) {
+				if (!DetectCollision (boarders, _Facing)) {
 					_Position.X -= _Velocity.X;
 				}
 			} else if (state.IsKeyDown (Keys.Up)) {
 				_Facing = Direction.Up;
 
-				if (DetectCollision (boarders, _Facing)) {
+				if (!DetectCollision (boarders, _Facing)) {
 					_Position.Y -= _Velocity.Y;
 				}
 			} else if (state.IsKeyDown (Keys.Down)) {
 				_Facing = Direction.Down;
 
-				if (DetectCollision (boarders, _Facing)) {
+				if (!DetectCollision (boarders, _Facing)) {
 					_Position.Y += _Velocity.Y;
 				}
 			}
@@ -81,6 +83,7 @@ namespace Hoover
 				rect = new Rectangle (40, 3, 40, 35);
 			}
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
+			//spriteBatch.Draw (_texture, Boarders, Color.White);
 		}
 	}
 }

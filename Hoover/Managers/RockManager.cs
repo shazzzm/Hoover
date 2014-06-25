@@ -16,13 +16,23 @@ namespace Hoover
 		private Rock[] rocks;
 
 		/// <summary>
+		/// Number of rocks left
+		/// </summary>
+		private int _noRocks;
+
+		/// <summary>
 		/// Accesses the rock array
 		/// </summary>
 		/// <param name="index">Index.</param>
 		public Rock this[int index]
 		{
 			get {
-				return rocks [index];
+				if (_noRocks != 0)
+				{
+					return rocks[index];
+				}
+
+				return null;
 			}
 		}
 
@@ -32,7 +42,7 @@ namespace Hoover
 		/// <value>The no rocks.</value>
 		public int noRocks {
 			get {
-				return this.rocks.Length;
+				return this._noRocks;
 			}
 		}
 
@@ -46,7 +56,10 @@ namespace Hoover
 			for (int i = 0; i < rocks.Length; i++) {
 				rocks [i] = new Rock (new Vector2 (r.Next (300) * 2, r.Next(250) * 2));
 			}
+
+			_noRocks = rocks.Length;
 		}
+
 
 		/// <summary>
 		/// Removes the specified rock
@@ -55,6 +68,7 @@ namespace Hoover
 		public void removeRock(int index)
 		{
 			rocks [index] = null;
+			_noRocks--;
 		}
 
 		/// <summary>

@@ -10,6 +10,7 @@ namespace Hoover
 			_assetName = "Rock";
 			_Position = position;
 			_Velocity = Vector2.Zero;
+			_textureSize = new Vector2 (20, 20);
 		}
 
 		#region implemented abstract members of Sprite

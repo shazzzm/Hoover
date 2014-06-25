@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Diagnostics;
 
 
 namespace Hoover
@@ -43,6 +44,11 @@ namespace Hoover
 		/// </summary>
 		protected string _assetName;
 
+		/// <summary>
+		/// The size of the _texture for our boarders
+		/// </summary>
+		protected Vector2 _textureSize;
+
 		#region Properties
 
 		/// <summary>
@@ -78,7 +84,8 @@ namespace Hoover
 		{
 			_texture = contentManager.Load<Texture2D> (_assetName);
 			// Create a rectangle based off the size of the textures for collision detection
-			_boarders = new Rectangle(((int)_Position.X - _texture.Width / 2), (int)(_Position.Y - _texture.Height/2), _texture.Width, _texture.Height);
+			//_boarders = new Rectangle(((int)_Position.X - (int)_textureSize.X/ 2), (int)(_Position.Y - (int)_textureSize.Y/2), (int)_textureSize.X, (int)_textureSize.Y);
+			_boarders = new Rectangle(((int)_Position.X), (int)(_Position.Y), (int)_textureSize.X, (int)_textureSize.Y);
 		}
 
 		/// <summary>
@@ -88,6 +95,7 @@ namespace Hoover
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw (_texture, _Position, Color.White);
+			//spriteBatch.Draw (_texture, Boarders, Color.White);
 		}
 
 		/// <summary>
@@ -120,15 +128,21 @@ namespace Hoover
 				// We add the velocity to the current position to see if a collision will occur, 
 				if (d == Direction.Left) {
 					r = new Rectangle ((int)(_Position.X - _Velocity.X), (int)_Position.Y, Boarders.Width, Boarders.Height);
+					//Debug.Write ("Left intersection");
+
 				} else if (d == Direction.Right) {
 					r = new Rectangle ((int)(_Position.X + _Velocity.X), (int)_Position.Y, Boarders.Width, Boarders.Height);
+					//Debug.Write ("Right intersection");
 				} else if (d == Direction.Up) {
 					r = new Rectangle ((int)_Position.X, (int)(_Position.Y - _Velocity.Y), Boarders.Width, Boarders.Height); 
+					//Debug.Write ("Up intersection");
 				} else if (d == Direction.Down) {
 					r = new Rectangle ((int)_Position.X, (int)(_Position.Y + _Velocity.Y), Boarders.Width, Boarders.Height);
+					//Debug.Write ("Down intersection");
 				}
 
 				if (r.Intersects (boarders [i])) {
+					Debug.Write (boarders [i]);
 					return true;
 				}
 			}

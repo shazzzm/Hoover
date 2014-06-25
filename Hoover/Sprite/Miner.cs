@@ -16,6 +16,7 @@ namespace Hoover
 			_Position = new Vector2 (20, 20);
 			_Velocity = new Vector2 (2, 2);
 			_Facing = Direction.Down;
+			_textureSize = new Vector2 (25, 20);
 		}
 
 		/// <summary>
@@ -36,17 +37,24 @@ namespace Hoover
 				rect = new Rectangle (160, 20, 25, 20);
 			}
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
+
 		}
 
 		public void Update (GameTime gmt, RockManager rocks)
 		{
-			float close = 10000f;
+			// If we're out of rocks, just chill
+			if (rocks.noRocks == 0) {
+				return;
+			}
+
+			float close = 100000f;
 			int closeID = -1;
 			// Find the closest rock
 			for (int i = 0; i < rocks.noRocks; i++) {
 				if (rocks [i] != null) {
 					if (Vector2.Distance (_Position, rocks [i].Position) < close) {
 						closeID = i;
+						close = Vector2.Distance (_Position, rocks [i].Position);
 					}
 				}
 			}
@@ -54,11 +62,13 @@ namespace Hoover
 			// Quick check that there hasn't been a fuck up
 			if (closeID == -1) {
 				int i = 0;
-				while (rocks[i] != null) {
-					closeID = i;
+				while (rocks[i] == null) {
 					i++;
+					closeID = i;
 				}
-			}
+			} 
+
+
 
 			// Move towards the nearest rock
 			if ((rocks [closeID].Position.X - _Position.X) > 2) {
