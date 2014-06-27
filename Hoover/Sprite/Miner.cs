@@ -65,15 +65,21 @@ namespace Hoover
 				move (Direction.Down, boarders);
 			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
 				move (Direction.Left, boarders);
-			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2) {
+			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2 && collisionRight == 0) {
 				move (Direction.Up, boarders);
 			} else if ((rocks [closeID].Position.X - _Position.X) > 2) {
 				move (Direction.Right, boarders);
 			} 
 			// If we're on a rock, mine it!
-			else {
+			else if (rocks [closeID].Boarders.Intersects (_boarders)) {
 				noRocksMined++;
 				rocks.removeRock (closeID);
+			}
+			// HACK: Should fix the right collision borking
+			else if (collisionRight > 0) {
+				// If there's no collision on the right anymore, we move right
+				move (Direction.Right, boarders);
+				collisionRight = 0;
 			}
 
 			UpdateBoarders ();
@@ -105,7 +111,7 @@ namespace Hoover
 					move (Direction.Right, boarders);
 				} else if (d == Direction.Left) {
 					Debug.Write ("Collision Left: Trying Down");
-					move (Direction.Down, boarders);
+					move (Direction.Up, boarders);
 				} else if (d == Direction.Up) {
 					Debug.Write ("Collision Up: Trying Left");
 					move (Direction.Left, boarders);
