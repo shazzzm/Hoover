@@ -11,8 +11,12 @@ namespace Hoover
 	/// </summary>
 	public class Miner : Sprite
 	{
-		int collisionRight = 0;
+		//int collisionRight = 0;
 		int noRocksMined = 0;
+
+		int pathNo = 0;
+
+		List<Direction> path = new List<Direction>();
 		public Miner ()
 		{
 			_assetName = "Miner";
@@ -50,8 +54,22 @@ namespace Hoover
 				return;
 			}
 
+			// If we're on a rock, mine it!
+			int j = 0;
+			foreach (Rectangle r in rocks.getBoarders ()) {
+				if (r.Intersects (_boarders)) {
+					rocks.removeRock (j);
+
+					// Create a new path
+					path = new List<Direction> ();
+					pathNo = 0;
+				}
+				j++;
+			}
+
 			float close = 100000f;
 			int closeID = -1;
+
 			// Find the closest rock
 			for (int i = 0; i < rocks.noRocks; i++) {
 				if (Vector2.Distance (_Position, rocks [i].Position) < close) {
@@ -60,8 +78,24 @@ namespace Hoover
 				}
 			}
 
-			// Move towards the nearest rock
-			if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
+			// If there's no path, or if there's a collision create it so it moves towards the nearest rock
+			if (path.Count == 0 || checkPathCollision(boarders)) {
+				path = findPath (rocks [closeID].Position, boarders);
+				pathNo = 0;
+			}
+
+			// TODO: Have an error here
+			if (pathNo == 2000 || pathNo >= path.Count) {
+				return;
+			}
+
+
+			move (path [pathNo]);
+			pathNo++;
+
+
+
+			/*if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
 				move (Direction.Down, boarders);
 			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
 				move (Direction.Left, boarders);
@@ -74,9 +108,29 @@ namespace Hoover
 			else {
 				noRocksMined++;
 				rocks.removeRock (closeID);
-			}
+			} */
 
 			UpdateBoarders ();
+		}
+
+		/// <summary>
+		/// Check if there's a collision on our path
+		/// </summary>
+		/// <returns><c>true</c>, if path collision was checked, <c>false</c> otherwise.</returns>
+		private bool checkPathCollision(List<Rectangle> boarders)
+		{
+			Vector2 positionAlongPath = new Vector2(_Position.X, _Position.Y);
+
+			// Move along the path
+			foreach (Direction d in path) {
+				positionAlongPath = updateVectorMovement (positionAlongPath, _Velocity, d);
+
+				if (DetectCollision (boarders, d, positionAlongPath)) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/// <summary>
@@ -112,10 +166,94 @@ namespace Hoover
 				} else if (d == Direction.Right) {
 					Debug.Write ("Collision Right: Trying Down");
 					move (Direction.Down, boarders);
-					collisionRight++;
 				} 
 			}
 
+		}
+
+		/// <summary>
+		/// Moves without checking for collisions
+		/// </summary>
+		/// <param name="d">D.</param>
+		private void move(Direction d)
+		{
+			_Position = updateVectorMovement (_Position, _Velocity, d);
+		}
+
+		/// <summary>
+		/// Implementation of an A* search algorithm to find rocks
+		/// </summary>
+		private List<Direction> findPath(Vector2 goalPos, List<Rectangle> boarders)
+		{
+			Debug.Write (goalPos);
+			List<Direction> path = new List<Direction> (); // Our path so far
+			List<Vector2> checkedSquares = new List<Vector2> (); // Square's we've checked so far
+			Vector2 curPos = new Vector2 (_Position.X, _Position.Y);
+
+			while (Math.Abs((curPos - goalPos).Length()) > 1)
+			{
+				Direction bestMove = Direction.Down;
+				Vector2 newLocation = curPos;
+				float bestCost = 500000f;
+				// Check all neighbours of current tile for the best
+				for (int i = 0; i < 4; i++)
+				{
+					float heuristic;
+					Direction d = (Direction)i;
+					Vector2 posToCheck = new Vector2(curPos.X, curPos.Y);
+					if (d == Direction.Down) {
+						posToCheck.Y += _Velocity.Y;
+					} else if (d == Direction.Up) {
+						posToCheck.Y -= _Velocity.Y;
+					} else if (d == Direction.Left) {
+						posToCheck.X -= _Velocity.X;
+					} else if (d == Direction.Right) {
+						posToCheck.X += _Velocity.X;
+					}
+
+					// If we've already checked the square, we don't want to go over it again
+					if (checkedSquares.Contains (posToCheck)) {
+						heuristic = 500000f;
+					} else {
+						heuristic = getHeuristic (posToCheck, goalPos, boarders, new Rectangle ((int)posToCheck.X, (int)posToCheck.Y, _boarders.Width, _boarders.Height));
+					}
+					Debug.Write ("Current Best: " + bestCost.ToString());
+					Debug.Write ("Checking: " + d.ToString ());
+					Debug.Write("Heuristic: " + heuristic.ToString()); 
+					if (heuristic < bestCost) {
+						bestMove = d;
+						newLocation = posToCheck;
+						bestCost = heuristic;
+					}
+					Debug.Write ("Best Move: " + bestMove.ToString());
+				}
+				checkedSquares.Add (newLocation);
+				path.Add (bestMove);
+
+				// Update our position
+				curPos = newLocation;
+				Debug.Write (curPos);
+
+				// If this gets a bit big...
+				if (path.Count > 2000) {
+					return path;
+				}
+			}
+
+
+			return path;
+		}
+
+		private float getHeuristic(Vector2 pos, Vector2 goal, List<Rectangle> boarders, Rectangle myBoarders)
+		{
+			// If there's an object in the way, return a very high cost
+			foreach (Rectangle r in boarders) {
+				if (r.Intersects (myBoarders)) {
+					return 10000f;
+				}
+			}
+
+			return (Math.Abs (pos.X - goal.X) + Math.Abs (pos.Y - goal.Y));
 		}
 
 		#region implemented abstract members of Sprite

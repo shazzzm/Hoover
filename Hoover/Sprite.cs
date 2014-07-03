@@ -120,23 +120,24 @@ namespace Hoover
 		/// <returns>The collision.</returns>
 		/// <param name="boarders">Boarders.</param>
 		/// <param name="d">Direction to check</param>
-		protected bool DetectCollision(List<Rectangle> boarders, Direction d)
+		/// <param name="Position">Current Position</param>
+		protected bool DetectCollision(List<Rectangle> boarders, Direction d, Vector2 Position)
 		{
 			Rectangle r = new Rectangle();
 			for (int i = 0; i < boarders.Count; i++) {
 				// We add the velocity to the current position to see if a collision will occur, 
 				if (d == Direction.Left) {
-					r = new Rectangle ((int)(_Position.X - _Velocity.X), (int)_Position.Y, Boarders.Width, Boarders.Height);
+					r = new Rectangle ((int)(Position.X - _Velocity.X), (int)Position.Y, Boarders.Width, Boarders.Height);
 					//Debug.Write ("Left intersection");
 
 				} else if (d == Direction.Right) {
-					r = new Rectangle ((int)(_Position.X + _Velocity.X), (int)_Position.Y, Boarders.Width, Boarders.Height);
+					r = new Rectangle ((int)(Position.X + _Velocity.X), (int)Position.Y, Boarders.Width, Boarders.Height);
 					//Debug.Write ("Right intersection");
 				} else if (d == Direction.Up) {
-					r = new Rectangle ((int)_Position.X, (int)(_Position.Y - _Velocity.Y), Boarders.Width, Boarders.Height); 
+					r = new Rectangle ((int)Position.X, (int)(Position.Y - _Velocity.Y), Boarders.Width, Boarders.Height); 
 					//Debug.Write ("Up intersection");
 				} else if (d == Direction.Down) {
-					r = new Rectangle ((int)_Position.X, (int)(_Position.Y + _Velocity.Y), Boarders.Width, Boarders.Height);
+					r = new Rectangle ((int)Position.X, (int)(Position.Y + _Velocity.Y), Boarders.Width, Boarders.Height);
 					//Debug.Write ("Down intersection");
 				}
 
@@ -146,6 +147,39 @@ namespace Hoover
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		/// Detects a collision at our position
+		/// </summary>
+		/// <returns><c>true</c>, if collision was detected, <c>false</c> otherwise.</returns>
+		/// <param name="boarders">Boarders.</param>
+		/// <param name="d">D.</param>
+		protected bool DetectCollision(List<Rectangle> boarders, Direction d)
+		{
+			return DetectCollision (boarders, d, _Position);
+		}
+
+		/// <summary>
+		/// Updates the vector with the movement in the specified direction
+		/// </summary>
+		/// <returns>The new vector</returns>
+		/// <param name="currentLocation">Current location.</param>
+		/// <param name="velocity">Velocity</param>
+		/// <param name="d">Direction we're moving.</param>
+		protected Vector2 updateVectorMovement(Vector2 currentLocation, Vector2 velocity, Direction d)
+		{
+			if (d == Direction.Down) {
+				currentLocation.Y += velocity.Y;
+			} else if (d == Direction.Left) {
+				currentLocation.X -= velocity.X;
+			} else if (d == Direction.Up) {
+				currentLocation.Y -= velocity.Y;
+			} else if (d == Direction.Right) {
+				currentLocation.X += velocity.X;
+			} 
+
+			return currentLocation;
 		}
 	}
 }
