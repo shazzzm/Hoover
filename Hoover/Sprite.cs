@@ -13,7 +13,7 @@ namespace Hoover
 	/// </summary>
 	public abstract class Sprite
 	{
-		protected enum Direction { Up, Down, Left, Right };
+		protected enum Direction { Up, Down, Left, Right, None };
 
 		/// <summary>
 		/// Direction the sprite is facing
@@ -139,6 +139,8 @@ namespace Hoover
 				} else if (d == Direction.Down) {
 					r = new Rectangle ((int)Position.X, (int)(Position.Y + _Velocity.Y), Boarders.Width, Boarders.Height);
 					//Debug.Write ("Down intersection");
+				} else if (d == Direction.None) {
+					r = new Rectangle ((int)Position.X, (int)(Position.Y), Boarders.Width, Boarders.Height);
 				}
 
 				if (r.Intersects (boarders [i])) {

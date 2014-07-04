@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Hoover
 {
@@ -13,9 +14,10 @@ namespace Hoover
 	{
 		//int collisionRight = 0;
 		int noRocksMined = 0;
-
+		bool checkPath = false;
 		int pathNo = 0;
 
+		List<Vector2> vectorPath = new List<Vector2>();
 		List<Direction> path = new List<Direction>();
 		public Miner ()
 		{
@@ -44,11 +46,19 @@ namespace Hoover
 				rect = new Rectangle (160, 20, 25, 20);
 			}
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
-
+			foreach (Vector2 pos in vectorPath) {
+				//spriteBatch.Draw (_texture, pos, rect, Color.White);
+			}
 		}
 
 		public void Update (GameTime gmt, RockManager rocks, List<Rectangle> boarders)
 		{
+			KeyboardState state = Keyboard.GetState ();
+			if (state.IsKeyDown (Keys.A)) {
+				checkPath = true;
+			} else {
+				checkPath = false;
+			}
 			// If we're out of rocks, just chill
 			if (rocks.noRocks == 0) {
 				return;
@@ -85,30 +95,13 @@ namespace Hoover
 			}
 
 			// TODO: Have an error here
-			if (pathNo == 2000 || pathNo >= path.Count) {
+			if (pathNo == 500 || pathNo >= path.Count) {
+				path = new List<Direction>();
 				return;
 			}
 
-
 			move (path [pathNo]);
 			pathNo++;
-
-
-
-			/*if ((rocks [closeID].Position.Y - _Position.Y) > 2) {
-				move (Direction.Down, boarders);
-			} else if ((rocks [closeID].Position.X - _Position.X) < 2) {
-				move (Direction.Left, boarders);
-			} else if ((rocks [closeID].Position.Y - _Position.Y) < 2) {
-				move (Direction.Up, boarders);
-			} else if ((rocks [closeID].Position.X - _Position.X) > 2) {
-				move (Direction.Right, boarders);
-			} 
-			// If we're on a rock, mine it!
-			else {
-				noRocksMined++;
-				rocks.removeRock (closeID);
-			} */
 
 			UpdateBoarders ();
 		}
@@ -119,13 +112,11 @@ namespace Hoover
 		/// <returns><c>true</c>, if path collision was checked, <c>false</c> otherwise.</returns>
 		private bool checkPathCollision(List<Rectangle> boarders)
 		{
-			Vector2 positionAlongPath = new Vector2(_Position.X, _Position.Y);
-
 			// Move along the path
-			foreach (Direction d in path) {
-				positionAlongPath = updateVectorMovement (positionAlongPath, _Velocity, d);
+			foreach (Vector2 pos in vectorPath) {
 
-				if (DetectCollision (boarders, d, positionAlongPath)) {
+				if (DetectCollision (boarders, Direction.None, pos)) {
+					Debug.Write ("Collision going at " + pos.ToString());
 					return true;
 				}
 			}
@@ -214,28 +205,35 @@ namespace Hoover
 					// If we've already checked the square, we don't want to go over it again
 					if (checkedSquares.Contains (posToCheck)) {
 						heuristic = 500000f;
+						//Debug.Write ("Checking square that's already done");
 					} else {
 						heuristic = getHeuristic (posToCheck, goalPos, boarders, new Rectangle ((int)posToCheck.X, (int)posToCheck.Y, _boarders.Width, _boarders.Height));
 					}
-					Debug.Write ("Current Best: " + bestCost.ToString());
-					Debug.Write ("Checking: " + d.ToString ());
-					Debug.Write("Heuristic: " + heuristic.ToString()); 
+					//Debug.Write ("Current Best: " + bestCost.ToString());
+					//Debug.Write ("Checking: " + d.ToString ());
+					//Debug.Write("Heuristic: " + heuristic.ToString()); 
 					if (heuristic < bestCost) {
 						bestMove = d;
 						newLocation = posToCheck;
 						bestCost = heuristic;
 					}
-					Debug.Write ("Best Move: " + bestMove.ToString());
+					//Debug.Write ("Best Move: " + bestMove.ToString());
+				}
+
+				if (checkPath) {
+					foreach (Direction d in path) {
+						Debug.Write (d);
+					}
 				}
 				checkedSquares.Add (newLocation);
 				path.Add (bestMove);
-
+				vectorPath = checkedSquares;
 				// Update our position
 				curPos = newLocation;
-				Debug.Write (curPos);
+				//Debug.Write (curPos);
 
 				// If this gets a bit big...
-				if (path.Count > 2000) {
+				if (path.Count > 500) {
 					return path;
 				}
 			}
@@ -249,7 +247,7 @@ namespace Hoover
 			// If there's an object in the way, return a very high cost
 			foreach (Rectangle r in boarders) {
 				if (r.Intersects (myBoarders)) {
-					return 10000f;
+					return 50000f;
 				}
 			}
 
