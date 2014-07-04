@@ -3,10 +3,10 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Hoover/Sprite/Miner.cs">
     <Files>
       <File FileName="Hoover/Game1.cs" Line="1" Column="1" />
-      <File FileName="Hoover/Sprite.cs" Line="140" Column="71" />
-      <File FileName="Hoover/Sprite/Hoover.cs" Line="29" Column="47" />
-      <File FileName="Hoover/Sprite/Miner.cs" Line="141" Column="36" />
-      <File FileName="Hoover/Managers/RockManager.cs" Line="49" Column="22" />
+      <File FileName="Hoover/Sprite.cs" Line="142" Column="35" />
+      <File FileName="Hoover/Sprite/Hoover.cs" Line="18" Column="3" />
+      <File FileName="Hoover/Sprite/Miner.cs" Line="133" Column="4" />
+      <File FileName="Hoover/Managers/RockManager.cs" Line="31" Column="22" />
       <File FileName="Hoover/Managers/Manager.cs" Line="1" Column="1" />
       <File FileName="Hoover/Sprite/Rock.cs" Line="1" Column="1" />
     </Files>

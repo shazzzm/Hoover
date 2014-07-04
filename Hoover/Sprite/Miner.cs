@@ -47,7 +47,7 @@ namespace Hoover
 			}
 			spriteBatch.Draw (_texture, _Position, rect, Color.White);
 			foreach (Vector2 pos in vectorPath) {
-				//spriteBatch.Draw (_texture, pos, rect, Color.White);
+				spriteBatch.Draw (_texture, pos, rect, Color.White);
 			}
 		}
 
@@ -73,6 +73,7 @@ namespace Hoover
 					// Create a new path
 					path = new List<Direction> ();
 					pathNo = 0;
+					return;
 				}
 				j++;
 			}
@@ -97,6 +98,7 @@ namespace Hoover
 			// TODO: Have an error here
 			if (pathNo == 500 || pathNo >= path.Count) {
 				path = new List<Direction>();
+				pathNo = 0;
 				return;
 			}
 
@@ -125,49 +127,12 @@ namespace Hoover
 		}
 
 		/// <summary>
-		/// Moves the sprite in the specified direction. We also do edge detection e.t.c here
-		/// </summary>
-		/// <param name="d">Direction we're moving</param>
-		/// <param name="boarders">Boarders to avoid</param>
-		private void move(Direction d, List<Rectangle> boarders)
-		{
-			_Facing = d;
-			// If there's no collision, move!
-			if (!DetectCollision (boarders, d)) {
-				if (d == Direction.Down) {
-					_Position.Y += _Velocity.Y;
-				} else if (d == Direction.Left) {
-					_Position.X -= _Velocity.X;
-				} else if (d == Direction.Up) {
-					_Position.Y -= _Velocity.Y;
-				} else if (d == Direction.Right) {
-					_Position.X += _Velocity.X;
-				} 
-			} else {
-				// If the collision is one way, try going another!
-				if (d==Direction.Down) {
-					Debug.Write ("Collision Down: Trying Right");
-					move (Direction.Right, boarders);
-				} else if (d == Direction.Left) {
-					Debug.Write ("Collision Left: Trying Down");
-					move (Direction.Down, boarders);
-				} else if (d == Direction.Up) {
-					Debug.Write ("Collision Up: Trying Left");
-					move (Direction.Left, boarders);
-				} else if (d == Direction.Right) {
-					Debug.Write ("Collision Right: Trying Down");
-					move (Direction.Down, boarders);
-				} 
-			}
-
-		}
-
-		/// <summary>
 		/// Moves without checking for collisions
 		/// </summary>
 		/// <param name="d">D.</param>
 		private void move(Direction d)
 		{
+			_Facing = d;
 			_Position = updateVectorMovement (_Position, _Velocity, d);
 		}
 
@@ -176,7 +141,6 @@ namespace Hoover
 		/// </summary>
 		private List<Direction> findPath(Vector2 goalPos, List<Rectangle> boarders)
 		{
-			Debug.Write (goalPos);
 			List<Direction> path = new List<Direction> (); // Our path so far
 			List<Vector2> checkedSquares = new List<Vector2> (); // Square's we've checked so far
 			Vector2 curPos = new Vector2 (_Position.X, _Position.Y);
@@ -232,7 +196,7 @@ namespace Hoover
 				curPos = newLocation;
 				//Debug.Write (curPos);
 
-				// If this gets a bit big...
+				// If this gets a bit big, run it again
 				if (path.Count > 500) {
 					return path;
 				}

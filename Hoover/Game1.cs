@@ -21,6 +21,7 @@ namespace Hoover
 		Hoover hoover;
 		Miner miner;
 		RockManager rocks;
+		Wall wall;
 
         public Game1()
         {
@@ -42,6 +43,7 @@ namespace Hoover
 			hoover = new Hoover ();
 			miner = new Miner ();
 			rocks = new RockManager ();
+			wall = new Wall (new Vector2 (40, 10));
             base.Initialize();
 				
         }
@@ -59,6 +61,7 @@ namespace Hoover
 			hoover.LoadContent (this.Content);
 			miner.LoadContent (this.Content);
 			rocks.LoadContent (this.Content);
+			wall.LoadContent (this.Content);
         }
 
         /// <summary>
@@ -97,6 +100,7 @@ namespace Hoover
 			hoover.Draw (spriteBatch);
 			miner.Draw (spriteBatch);
 			rocks.Draw (spriteBatch);
+			wall.Draw (spriteBatch);
 
 			spriteBatch.End();
             base.Draw(gameTime);

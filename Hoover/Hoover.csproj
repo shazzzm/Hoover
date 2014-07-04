@@ -58,6 +58,8 @@
     <Compile Include="Sprite\Rock.cs" />
     <Compile Include="Managers\RockManager.cs" />
     <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Sprite\Wall.cs" />
+    <Compile Include="Managers\WallManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png" />
@@ -76,6 +78,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Miner.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Tech.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
